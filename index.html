@@ -9,13 +9,16 @@
 body {
   margin: 0;
   background-color: black;
-  color: white;
-  font-family: Arial, sans-serif;
-  text-align: center;
+}
+
+.video-wrapper {
+  max-width: 960px;
+  margin: 40px auto;   /* EZ teszi középre */
 }
 
 .video-container {
   position: relative;
+  width: 100%;
   padding-bottom: 56.25%;
   height: 0;
 }
@@ -35,25 +38,22 @@ body {
   color: black;
   border: none;
   cursor: pointer;
-  transition: opacity 1s ease;
-}
-
-#continueBtn:hover {
-  background-color: #ccc;
 }
 </style>
 </head>
 
 <body>
 
-<div class="video-container">
-  <iframe 
-    id="mainVideo"
-    src="https://www.youtube.com/embed/PFn3w7sRm3Y?enablejsapi=1"
-    frameborder="0"
-    allow="autoplay; encrypted-media"
-    allowfullscreen>
-  </iframe>
+<div class="video-wrapper">
+  <div class="video-container">
+    <iframe 
+      id="mainVideo"
+      src="https://www.youtube.com/watch?v=_nSPejsKDYc"
+      frameborder="0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen>
+    </iframe>
+  </div>
 </div>
 
 <button id="continueBtn">
@@ -61,33 +61,47 @@ body {
 </button>
 
 <script src="https://www.youtube.com/iframe_api"></script>
-
 <script>
   var player;
+  var shown = false;
 
   function onYouTubeIframeAPIReady() {
     player = new YT.Player('mainVideo', {
       events: {
-        'onStateChange': onPlayerStateChange
+        'onReady': onPlayerReady
       }
     });
   }
 
-  function onPlayerStateChange(event) {
-    if (event.data == YT.PlayerState.PLAYING) {
-      var checkTime = setInterval(function() {
-        if (player.getCurrentTime() >= 146) { // 2:26
-          document.getElementById("continueBtn").style.display = "block";
-          clearInterval(checkTime);
-        }
-      }, 1000);
-    }
-  }
+  function onPlayerReady() {
+    // Stabil idő-ellenőrzés: fél másodpercenként ránézünk
+    setInterval(function () {
+      if (!player || shown) return;
 
-  document.getElementById("continueBtn").onclick = function() {
-    window.location.href = "https://trknorbert76-eng.github.io/iras-01/";
-  };
+      var t = 0;
+      try {
+        t = player.getCurrentTime();
+      } catch (e) {
+        return; // ha az API épp nem elérhető, ne omoljon össze
+      }
+
+      if (t >= 166) { // 2:40
+        document.getElementById("continueBtn").style.display = "block";
+        shown = true;
+      }
+    }, 500);
+
+    // Gomb kattintás
+    document.getElementById("continueBtn").onclick = function () {
+      window.location.href = "https://trknorbert76-eng.github.io/iras-02/";
+    };
+  }
 </script>
 
 </body>
+
 </html>
+
+
+
+
