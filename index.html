@@ -45,14 +45,28 @@ body {
   margin: 30px auto 40px auto;
   padding: 14px 28px;
   font-size: 20px;
-  background-color: white;
-  color: black;
+  background-color: #f59e0b;
+  color: white;
   border: none;
   border-radius: 12px;
   cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 0 0 rgba(245,158,11,0);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.6s ease;
 }
 
-#continueBtn:hover { background-color: #ddd; }
+#continueBtn.show {
+  opacity: 1;
+  transform: translateY(0);
+  box-shadow: 0 0 25px rgba(245,158,11,0.6);
+}
+
+#continueBtn:hover {
+  background-color: #d97706;
+  box-shadow: 0 0 35px rgba(245,158,11,0.9);
+}
 </style>
 </head>
 
@@ -91,10 +105,17 @@ body {
       var t = 0;
       try { t = player.getCurrentTime(); } catch (e) { return; }
 
-      if (t >= SHOW_AT) {
-        document.getElementById("continueBtn").style.display = "inline-block";
-        shown = true;
-      }
+      
+   if (t >= SHOW_AT) {
+  var btn = document.getElementById("continueBtn");
+  btn.style.display = "inline-block";
+
+  setTimeout(function(){
+    btn.classList.add("show");
+  }, 50);
+
+  shown = true;
+}
     }, 500);
 
     document.getElementById("continueBtn").onclick = function () {
@@ -105,6 +126,7 @@ body {
 
 </body>
 </html>
+
 
 
 
