@@ -3,17 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Az Írás – Hívő</title>
+<title>Az Írás – Hitetlen</title>
 
 <style>
 body {
   margin: 0;
   background-color: black;
+  text-align: center;
 }
 
 .video-wrapper {
   max-width: 960px;
-  margin: 40px auto;   /* EZ teszi középre */
+  margin: 40px auto;
+  padding: 0 12px;
 }
 
 .video-container {
@@ -31,14 +33,17 @@ body {
 
 #continueBtn {
   display: none;
-  margin: 30px auto;
+  margin: 30px auto 40px auto;
   padding: 14px 28px;
   font-size: 20px;
   background-color: white;
   color: black;
   border: none;
+  border-radius: 12px;
   cursor: pointer;
 }
+
+#continueBtn:hover { background-color: #ddd; }
 </style>
 </head>
 
@@ -48,60 +53,46 @@ body {
   <div class="video-container">
     <iframe 
       id="mainVideo"
-      src="https://www.youtube.com/watch?v=_nSPejsKDYc"
+      src="https://www.youtube.com/embed/_nSPejsKDYc?enablejsapi=1&origin=https://trknorbert76-eng.github.io"
       frameborder="0"
       allow="autoplay; encrypted-media"
       allowfullscreen>
     </iframe>
   </div>
-</div>
 
-<button id="continueBtn">
-  Folytatás
-</button>
+  <button id="continueBtn">Folytatás</button>
+</div>
 
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
   var player;
   var shown = false;
+  var SHOW_AT = 160; // 2:40
 
   function onYouTubeIframeAPIReady() {
     player = new YT.Player('mainVideo', {
-      events: {
-        'onReady': onPlayerReady
-      }
+      events: { 'onReady': onPlayerReady }
     });
   }
 
   function onPlayerReady() {
-    // Stabil idő-ellenőrzés: fél másodpercenként ránézünk
     setInterval(function () {
       if (!player || shown) return;
 
       var t = 0;
-      try {
-        t = player.getCurrentTime();
-      } catch (e) {
-        return; // ha az API épp nem elérhető, ne omoljon össze
-      }
+      try { t = player.getCurrentTime(); } catch (e) { return; }
 
-      if (t >= 166) { // 2:40
-        document.getElementById("continueBtn").style.display = "block";
+      if (t >= SHOW_AT) {
+        document.getElementById("continueBtn").style.display = "inline-block";
         shown = true;
       }
     }, 500);
 
-    // Gomb kattintás
     document.getElementById("continueBtn").onclick = function () {
-      window.location.href = "https://trknorbert76-eng.github.io/iras-02/";
+      window.location.href = "https://trknorbert76-eng.github.io/iras-01/";
     };
   }
 </script>
 
 </body>
-
 </html>
-
-
-
-
