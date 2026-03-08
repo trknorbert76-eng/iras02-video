@@ -13,11 +13,9 @@ html, body {
 body {
   margin: 0;
   background-color: black;
-
-  /* EZ középre rak mindent */
   display: flex;
-  justify-content: center;   /* vízszint */
-  align-items: flex-start;   /* felül maradjon */
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .video-wrapper {
@@ -36,13 +34,19 @@ body {
 
 .video-container iframe {
   position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
 }
 
 #continueBtn {
+  position: absolute;
+  left: 50%;
+  top: 68%;
+  transform: translate(-50%, -50%) scale(0.96);
+  z-index: 10;
+
   display: none;
-  margin: 30px auto 40px auto;
   padding: 14px 28px;
   font-size: 20px;
   background-color: #f59e0b;
@@ -53,13 +57,12 @@ body {
   font-weight: 600;
   box-shadow: 0 0 0 rgba(245,158,11,0);
   opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.6s ease;
+  transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.6s ease, background-color 0.3s ease;
 }
 
 #continueBtn.show {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate(-50%, -50%) scale(1);
   box-shadow: 0 0 25px rgba(245,158,11,0.6);
 }
 
@@ -75,15 +78,15 @@ body {
 <div class="video-wrapper">
   <div class="video-container">
     <iframe 
-  id="mainVideo"
-  src="https://www.youtube.com/embed/_nSPejsKDYc?enablejsapi=1&v=2"
-  frameborder="0"
-  allow="autoplay; encrypted-media"
-  allowfullscreen>
-</iframe>
-  </div>
+      id="mainVideo"
+      src="https://www.youtube.com/embed/_nSPejsKDYc?enablejsapi=1&v=2"
+      frameborder="0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen>
+    </iframe>
 
-  <button id="continueBtn">Folytatás</button>
+    <button id="continueBtn">Folytatás</button>
+  </div>
 </div>
 
 <script src="https://www.youtube.com/iframe_api"></script>
@@ -103,19 +106,22 @@ body {
       if (!player || shown) return;
 
       var t = 0;
-      try { t = player.getCurrentTime(); } catch (e) { return; }
+      try { 
+        t = player.getCurrentTime(); 
+      } catch (e) { 
+        return; 
+      }
 
-      
-   if (t >= SHOW_AT) {
-  var btn = document.getElementById("continueBtn");
-  btn.style.display = "inline-block";
+      if (t >= SHOW_AT) {
+        var btn = document.getElementById("continueBtn");
+        btn.style.display = "inline-block";
 
-  setTimeout(function(){
-    btn.classList.add("show");
-  }, 50);
+        setTimeout(function () {
+          btn.classList.add("show");
+        }, 50);
 
-  shown = true;
-}
+        shown = true;
+      }
     }, 500);
 
     document.getElementById("continueBtn").onclick = function () {
@@ -126,7 +132,3 @@ body {
 
 </body>
 </html>
-
-
-
-
